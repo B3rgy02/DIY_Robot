@@ -20,6 +20,7 @@ File description:
 #define ROBOT_GRIPPER 7
 
 #define HOMING_DELAY_MS 3000
+#define MOVING_DELAY_MS 1000
 #define GRIPPER_DELAY_MS 1000
 
 class DIY_Robot {
@@ -29,11 +30,16 @@ class DIY_Robot {
     int jointValues[5];
     int jointOffsets[5];
 
+    int jointsControl[2]; // Selected joints for joint control (2 at the time)
+    int jointControlIndex; // Joit control index
+
     int jointsLimits[2][5] = { // 1st row for minimum, 2nd row for maximum. Non changeable
       {0, 0, 0, 0, 0},
       {0, 0, 0, 0, 0}
     }; 
+    
     int homingAngles[5] = {0, 0, 0, 0, 0}; // Homing joint values. Non changeable
+    bool isAtHome;
 
     int gripperAngles[2] = {0, 0}; // Gripper angles (1st: open, 2nd: closed). Non changeable
     enum openCloseState {
@@ -48,6 +54,14 @@ class DIY_Robot {
     // Set functions
     void setJointValues(int jointValues_[5]);
     void setJointOffsets(int jointOffsets_[5]);
+    void setJointsControl(int index, int val);
+    void setjointControlIndex(int val);
+
+    // Get functions
+    bool getHomingState();
+    int getJointControl(int index);
+    int getjointControlIndex();
+    int getJointAngle(int index);
 
     // Methods
     void homing();

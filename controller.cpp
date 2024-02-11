@@ -7,20 +7,31 @@ File description:
 #include "controller.h"
 #include "Arduino.h"
 
+// LCD variable text (2nd line of the LCD)
+String textLCD;
+
+// Button pressing state
+bool isSelectPressed;
+bool isBackPressed;
+bool isUpPressed;
+bool isDownPressed;
+
+// Joystick pressing state
+bool isJoystickPressed;
+
 void controllerSetup(LiquidCrystal lcd_){
   /* 
   Joystick setup
   Only digital pins need pin association
   */
   pinMode(JOYSTICK_Z, INPUT);
+  isJoystickPressed = false;
 
   // LCD setup
   lcd_.begin(16,2);
   lcd_.clear();
   lcd_.noCursor();
-  lcd_.print("Power OFF");
-  lcd_.setCursor(1, 0);
-  lcd_.print("Ready to power ON");
+  lcd_.noDisplay();
   
   /* 
   Button setup
@@ -33,6 +44,12 @@ void controllerSetup(LiquidCrystal lcd_){
   pinMode(BUTTON_BACK, INPUT);
   pinMode(BUTTON_UP, INPUT);
   pinMode(BUTTON_DOWN, INPUT);
+
+  // Set button pressing states
+  isSelectPressed = false;
+  isBackPressed = false;
+  isUpPressed = false;
+  isDownPressed = false;
 
   // Switch setup for power ON/OFF mode
   pinMode(SWITCH_POWER, INPUT);

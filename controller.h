@@ -14,6 +14,15 @@ File description:
 #define JOYSTICK_Y A1
 #define JOYSTICK_Z 8
 
+// Joystick minimum and maximum analog values
+#define JOYSTICK_X_MIN 0
+#define JOYSTICK_X_MAX 1023
+#define JOYSTICK_Y_MIN 0 
+#define JOYSTICK_Y_MAX 1023
+#define JOYSTICK_SENSITIVITY 60
+#define JOYSTICK_X_DEADZONE 25
+#define JOYSTICK_Y_DEADZONE 25
+
 // Button pins
 #define BUTTON_SELECT 9
 #define BUTTON_BACK 10
@@ -41,6 +50,18 @@ File description:
 #define LCD_D5_PIN 29
 #define LCD_D6_PIN 30
 #define LCD_D7_PIN 31
+
+// LCD variable text (2nd line of the LCD)
+extern String textLCD;
+
+// Button pressing state
+extern bool isSelectPressed;
+extern bool isBackPressed;
+extern bool isUpPressed;
+extern bool isDownPressed;
+
+// Joystick pressing state
+extern bool isJoystickPressed;
 
 // Function definition
 void controllerSetup(LiquidCrystal lcd_);

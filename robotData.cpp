@@ -25,6 +25,13 @@ DIY_Robot::DIY_Robot(){
     jointValues[i] = 0;
     jointOffsets[i] = 0;
   }
+
+  isAtHome = false;
+
+  jointsControl[0] = 0;
+  jointsControl[1] = 1;
+
+  jointControlIndex = 0;
 }
 
 // Robot Set functions
@@ -42,6 +49,33 @@ void DIY_Robot::setJointOffsets(int jointOffsets_[5]){
   }
 
   return;
+}
+
+void DIY_Robot::setJointsControl(int index, int val){
+  jointsControl[index] = val;
+  return;
+}
+
+void DIY_Robot::setjointControlIndex(int val){
+  jointControlIndex = val;
+  return;
+}
+
+// Get functions
+bool DIY_Robot::getHomingState(){
+  return isAtHome;
+}
+
+int DIY_Robot::getJointControl(int index){
+  return jointsControl[index];
+}
+
+int DIY_Robot::getjointControlIndex(){
+  return jointControlIndex;
+}
+
+int DIY_Robot::getJointAngle(int index){
+  return jointValues[index];
 }
 
 // Robot methods
@@ -63,16 +97,25 @@ void DIY_Robot::homing(){
   gripperState = closed;
   delay(GRIPPER_DELAY_MS);
 
+  // Change homing state
+  isAtHome = true;
+
   return;
 }
 
 // Move function
 void DIY_Robot::move(){
-  // Move joints to position (with offset)
   for (int i = 0; i < NB_JOINTS; i++){
+    // Move joints to position (with offset)
     robotServos[i].write(jointValues[i] + jointOffsets[i]);
-  }
-  delay(HOMING_DELAY_MS);
+
+    // If not at home position, change homing state
+    if (jointValues[i] != homingAngles[i]){
+      isAtHome = false;
+    }
+  } 
+
+  delay(MOVING_DELAY_MS);
 
   return;
 }
@@ -106,7 +149,6 @@ void DIY_Robot::toggleGripper(){
 
   return;
 }
-
 
 
 
